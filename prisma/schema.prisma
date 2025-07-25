@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       Int      @id @default(autoincrement())
+  login    String   @unique
+  password String
+  isAdmin  Boolean  @default(false)
+  Tokens   Tokens[]
+}
+
+model Places {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  preview     String?
+  images      String[]
+  mapCode     String?
+  otherInfo   String?
+  Tours       Tours[]
+}
+
+model Tours {
+  id           Int            @id @default(autoincrement())
+  datesFrom    DateTime
+  datesTo      DateTime
+  maxPeople    Int
+  startPlace   String
+  price        Int
+  place        Places         @relation(fields: [placesId], references: [id])
+  applications Applications[]
+  placesId     Int
+}
+
+enum ApplicationStatus {
+  NEW
+  CONSIDERING
+  APPROVED
+  DECLINED
+}
+
+model Applications {
+  id        Int               @id @default(autoincrement())
+  phone     String
+  fio       String
+  comment   String?
+  status    ApplicationStatus @default(CONSIDERING)
+  createdAt DateTime          @default(now())
+  Tours     Tours?            @relation(fields: [toursId], references: [id])
+  toursId   Int?
+}
+
+model Tokens {
+  id           Int      @id @default(autoincrement())
+  refreshToken String
+  expDate      DateTime
+  Users        Users    @relation(fields: [usersId], references: [id])
+  usersId      Int
+}
