@@ -176,7 +176,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "F:\\react\\Travelers\\backend\\src\\generated\\prisma",
+      "value": "F:\\react\\Travelers\\Travelers_backend\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -189,12 +189,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "F:\\react\\Travelers\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "F:\\react\\Travelers\\Travelers_backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.7.0",
@@ -203,11 +202,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:Gwanda@localhost:5432/Travelersee?schema=public"
+        "value": null
       }
     }
   },

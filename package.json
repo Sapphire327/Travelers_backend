@@ -4,9 +4,11 @@
   "main": "src/server.ts",
   "module": "src/main.js",
   "scripts": {
+    "clean": "rimraf dist/",
+    "copy-files": "copy-folder src/generated dist/generated",
     "dev": "nodemon --exec tsx ./src/server.ts",
     "start": "node dist/server.js",
-    "build": "tsc && tsc-alias"
+    "build": "yarn clean && tsc && yarn copy-files && tsc-alias "
   },
   "keywords": [],
   "author": "",
@@ -32,9 +34,11 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.15.17",
+    "copy-folder-util": "^1.1.5",
     "express": "^5.1.0",
     "nodemon": "^3.1.10",
     "prisma": "^6.7.0",
+    "rimraf": "^6.0.1",
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.4",

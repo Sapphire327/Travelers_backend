@@ -21,7 +21,7 @@ const authService = new AuthService();
 
 async function main(){
     try{
-        await authService.createAdmin()
+        authService.createAdmin()
         app.all(/.*/, (req, res)=> {
             res.status(404).json({message:"Not Found"})
         });
@@ -35,4 +35,5 @@ async function main(){
     catch (e){
     }
 }
+
 main();
