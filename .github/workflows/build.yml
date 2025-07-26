@@ -1,0 +1,15 @@
+name: Build
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+jobs:
+  buildAndDeploy:
+    runs-on: self-hosted
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+      - name: docker rebuild
+      - run: docker compose up --build -d
