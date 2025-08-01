@@ -12,7 +12,8 @@ const app = express()
 const __dirname = path.resolve();
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({origin:['http://192.168.1.70:3000'],credentials:true}))
+const client_url = process.env.CLIENT_SERVER_URL || 'http://localhost:3000';
+app.use(cors({origin:[client_url],credentials:true}))
 // app.use('/api',router)
 app.use('/',router)
 app.use('/images', express.static(path.join(__dirname, 'uploads')));
