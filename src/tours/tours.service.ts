@@ -70,7 +70,11 @@ export class ToursService {
                 maxPeople:true,
                 _count:{
                     select:{
-                        applications:true
+                        applications:{
+                            where:{
+                                status:"APPROVED"
+                            }
+                        }
                     }
                 }
             },
