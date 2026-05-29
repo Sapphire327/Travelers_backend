@@ -3,26 +3,25 @@ import {
     applicationEdit,
     applicationPatchDto
 } from "@/applications/models/applications.dto"
+import { prisma } from '@/db'
 import ApiError from "@/exceptions/api-error"
-import { PrismaClient } from "@/generated/prisma"
 
 export class ApplicationsService {
-    prisma = new PrismaClient();
     async createApplication(applicationData: applicationCreate) {
-        const tour = await this.prisma.tours.findUnique({ where: { id: applicationData.toursId } })
+        const tour = await prisma.tours.findUnique({ where: { id: applicationData.toursId } })
         if (!tour) { throw ApiError.BadRequest('Тур не найден', ['Тур не найден']) }
-        await this.prisma.applications.create({
+        await prisma.applications.create({
             data: {
                 ...applicationData
             }
         })
     }
     async editApplication(applicationData: applicationEdit) {
-        const application = await this.prisma.applications.findUnique({ where: { id: applicationData.id } })
+        const application = await prisma.applications.findUnique({ where: { id: applicationData.id } })
         if (!application) throw ApiError.BadRequest('Запись была удалена или перемещена')
-        const tour = await this.prisma.tours.findUnique({ where: { id: applicationData.toursId } })
+        const tour = await prisma.tours.findUnique({ where: { id: applicationData.toursId } })
         if (!tour) { throw ApiError.BadRequest('Указанное место не найдено') }
-        await this.prisma.applications.update({
+        await prisma.applications.update({
             where: {
                 id: applicationData.id
             },
@@ -32,9 +31,9 @@ export class ApplicationsService {
         })
     }
     async patchApplication(applicationData: applicationPatchDto) {
-        const application = await this.prisma.applications.findUnique({ where: { id: applicationData.id } })
+        const application = await prisma.applications.findUnique({ where: { id: applicationData.id } })
         if (!application) throw ApiError.BadRequest('Запись была удалена или перемещена')
-        await this.prisma.applications.update({
+        await prisma.applications.update({
             where: {
                 id: applicationData.id
             },
@@ -45,12 +44,12 @@ export class ApplicationsService {
         })
     }
     async removeApplication(id: number) {
-        const application = await this.prisma.applications.findUnique({ where: { id: id } })
+        const application = await prisma.applications.findUnique({ where: { id: id } })
         if (!application) throw ApiError.BadRequest('Запись не найдена')
-        await this.prisma.applications.delete({ where: { id: id } })
+        await prisma.applications.delete({ where: { id: id } })
     }
     async getApplicationsConsideringList() {
-        return this.prisma.applications.findMany({
+        return prisma.applications.findMany({
             select: {
                 id: true,
                 status: true,
@@ -69,7 +68,7 @@ export class ApplicationsService {
         })
     }
     async getApprovedApplicationsListByTourId(tourId: number) {
-        return this.prisma.applications.findMany({
+        return prisma.applications.findMany({
             select: {
                 id: true,
                 status: true,

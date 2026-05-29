@@ -1,20 +1,19 @@
+import { prisma } from '@/db'
 import ApiError from "@/exceptions/api-error"
-import { PrismaClient } from "@/generated/prisma"
 import { placeCreate, placeEdit } from "@/places/models/places.dto"
 import fs from "fs"
-
 export class PlaceService {
-    prisma = new PrismaClient();
     async createPlace(placeData: placeCreate) {
-        await this.prisma.places.create({
+        await prisma.places.create({
             data: {
                 ...placeData,
+                images:JSON.stringify(placeData.images),
                 mapCode: placeData.mapCode?.replace('https://yandex.ru/maps/?um=constructor%', ''),
             }
         })
     }
     async editPlace(placeData: placeEdit) {
-        const place = await this.prisma.places.findUnique({ where: { id: placeData.id } })
+        const place = await prisma.places.findUnique({ where: { id: placeData.id } })
         if (!place) throw ApiError.BadRequest('Запись была удалена или перемещена')
         if (placeData.deleteImages)
             placeData.deleteImages.forEach((file) => {
@@ -23,14 +22,14 @@ export class PlaceService {
         if (placeData.preview)
             fs.unlink('uploads\\' + place.preview, () => { })
 
-        let oldImage = place.images
+        let oldImage =JSON.parse(place.images) as string[];
         if (placeData.deleteImages != null && placeData.deleteImages.length > 0) { // @ts-ignore
             oldImage = oldImage.filter(img => !placeData.deleteImages.includes(img))
         }
 
         const newImgList = [...oldImage, ...placeData.images]
         const preview = placeData.preview || place.preview
-        await this.prisma.places.update({
+        await prisma.places.update({
             where: {
                 id: placeData.id
             },
@@ -40,26 +39,28 @@ export class PlaceService {
                 otherInfo: placeData.otherInfo,
                 mapCode: placeData.mapCode?.replace('https://yandex.ru/maps/?um=constructor%', ''),
                 description: placeData.description,
-                images: newImgList
+                images: JSON.stringify(newImgList)
             }
         })
     }
     async removePlace(id: number) {
-        const place = await this.prisma.places.findUnique({ where: { id: id } })
+        const place = await prisma.places.findUnique({ where: { id: id } })
         if (!place) throw ApiError.BadRequest('Запись не найдена')
-        if (place.images && place.images.length > 0)
-            place.images.forEach((file) => {
+        const images = JSON.parse(place.images) as string[];
+        if (images && images.length > 0)
+            images.forEach((file) => {
                 fs.unlink('uploads\\' + file, () => { })
             })
         if (place.preview)
             fs.unlink('uploads\\' + place.preview, () => { })
-        await this.prisma.places.delete({ where: { id: id } })
+        await prisma.tours.deleteMany({ where: { placesId: id } })
+        await prisma.places.delete({ where: { id: id } })
     }
     async getPlacesList() {
-        return this.prisma.places.findMany({ select: { id: true, name: true } })
+        return prisma.places.findMany({ select: { id: true, name: true } })
     }
     async getPlaceById(id: number) {
-        const findedPlace = await this.prisma.places.findUnique({
+        const findedPlace = await prisma.places.findUnique({
             where: { id },
             select: {
                 id: true,
@@ -72,6 +73,9 @@ export class PlaceService {
             }
         })
         if (!findedPlace) throw ApiError.BadRequest('Запись не найдена')
-        return findedPlace
+            console.log(findedPlace.images);
+            console.log(JSON.parse(findedPlace.images));
+            
+        return {...findedPlace,images:JSON.parse(findedPlace.images)}
     }
 }

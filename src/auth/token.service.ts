@@ -1,9 +1,7 @@
+import { prisma } from '@/db'
 import jwt from 'jsonwebtoken'
-import {PrismaClient} from "@/generated/prisma";
-import process from "node:process";
-import {undefined} from "zod";
+import process from "node:process"
 export class TokenService {
-    prisma = new PrismaClient();
     generateTokens(payload:tokenPayload){
         const accessSecret = process.env.JWT_ACCESS_SECRET
         const refreshSecret = process.env.JWT_REFRESH_SECRET
@@ -18,7 +16,7 @@ export class TokenService {
     async updateToken(userId:number,refreshTokenId:number,newRefreshToken:string){
         const currentDate = new Date();
         currentDate.setDate(currentDate.getDate() + 30);
-        await this.prisma.tokens.update({
+        await prisma.tokens.update({
             data: {
                 refreshToken:newRefreshToken,
                 usersId:userId,
@@ -29,17 +27,17 @@ export class TokenService {
 
     }
     async saveToken(userId:number,refreshToken:string){
-        await this.prisma.tokens.deleteMany({
+        await prisma.tokens.deleteMany({
             where: {
                 expDate: { lt: new Date() },
                 usersId:userId
             },
         });
-        const tokenData = await this.prisma.tokens.findMany({where:{id:userId,refreshToken}})
+        const tokenData = await prisma.tokens.findMany({where:{id:userId,refreshToken}})
         if(tokenData.length==0){
             const currentDate = new Date();
             currentDate.setDate(currentDate.getDate() + 30);
-            await this.prisma.tokens.create({data:{
+            await prisma.tokens.create({data:{
                     refreshToken:refreshToken,
                     usersId:userId,
                     expDate:currentDate
@@ -47,10 +45,10 @@ export class TokenService {
         }
     }
     async removeToken(refreshToken:string){
-        await this.prisma.tokens.deleteMany({where:{refreshToken:refreshToken}})
+        await prisma.tokens.deleteMany({where:{refreshToken:refreshToken}})
     }
     async findToken(refreshToken:string){
-        return this.prisma.tokens.findFirst({where: {refreshToken: refreshToken}});
+        return prisma.tokens.findFirst({where: {refreshToken: refreshToken}});
     }
     getJwtSecrets(){
         const accessSecret = process.env.JWT_ACCESS_SECRET

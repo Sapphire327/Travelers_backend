@@ -11,8 +11,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
 }
 
 model Users {
@@ -24,11 +23,11 @@ model Users {
 }
 
 model Places {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String
   preview     String?
-  images      String[]
+  images      String
   mapCode     String?
   otherInfo   String?
   Tours       Tours[]

@@ -1,25 +1,23 @@
+import { prisma } from '@/db'
 import ApiError from "@/exceptions/api-error"
-import { PrismaClient } from "@/generated/prisma"
 import { tourCreate, tourEdit } from "@/tours/models/tours.dto"
-
 export class ToursService {
-    prisma = new PrismaClient();
     async createTour(tourData: tourCreate) {
-        const place = await this.prisma.places.findUnique({ where: { id: tourData.placesId } })
+        const place = await prisma.places.findUnique({ where: { id: tourData.placesId } })
         if (!place) { throw ApiError.BadRequest('Указанное место не найдено', ['Указанное место не найдено']) }
-        await this.prisma.tours.create({
+        await prisma.tours.create({
             data: {
                 ...tourData
             }
         })
     }
     async editTour(tourData: tourEdit) {
-        const tour = await this.prisma.tours.findUnique({ where: { id: tourData.id } })
+        const tour = await prisma.tours.findUnique({ where: { id: tourData.id } })
         if (!tour) throw ApiError.BadRequest('Запись была удалена или перемещена')
-        const place = await this.prisma.places.findUnique({ where: { id: tourData.placesId } })
+        const place = await prisma.places.findUnique({ where: { id: tourData.placesId } })
         if (!place) { throw ApiError.BadRequest('Указанное место не найдено') }
 
-        await this.prisma.tours.update({
+        await prisma.tours.update({
             where: {
                 id: tourData.id
             },
@@ -29,12 +27,12 @@ export class ToursService {
         })
     }
     async removeTour(id: number) {
-        const tour = await this.prisma.tours.findUnique({ where: { id: id } })
+        const tour = await prisma.tours.findUnique({ where: { id: id } })
         if (!tour) throw ApiError.BadRequest('Запись не найдена')
-        await this.prisma.tours.delete({ where: { id: id } })
+        await prisma.tours.delete({ where: { id: id } })
     }
     async getToursList() {
-        return this.prisma.tours.findMany({
+        return prisma.tours.findMany({
             select: {
                 id: true,
                 datesFrom: true,
@@ -58,7 +56,7 @@ export class ToursService {
         })
     }
     async getPublicToursList() {
-        const tours = await this.prisma.tours.findMany({
+        const tours = await prisma.tours.findMany({
             select: {
                 id: true,
                 datesFrom: true,
@@ -80,8 +78,6 @@ export class ToursService {
                     }
                 }
             },
-
-
         })
         return tours.map((tour) => ({
             id: tour.id,
@@ -94,7 +90,7 @@ export class ToursService {
         }))
     }
     async getPublicToursById(id: number) {
-        const tour = await this.prisma.tours.findUnique({
+        const tour = await prisma.tours.findUnique({
             where: { id: id },
             select: {
                 id: true,
@@ -122,11 +118,11 @@ export class ToursService {
             },
         })
         if (!tour) throw ApiError.BadRequest('Запись не найдена')
-        return { ...tour, currentPeople: tour._count.applications }
+        return { ...tour, currentPeople: tour._count.applications,place:{images:JSON.parse(tour.place.images)} }
     }
 
     async getTourById(id: number) {
-        const findedTour = await this.prisma.tours.findUnique({
+        const findedTour = await prisma.tours.findUnique({
             where: { id },
             select: {
                 id: true,

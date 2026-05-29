@@ -28,7 +28,7 @@ authRouter.post('/logout', async (req: Request, res: Response, next: NextFunctio
         res.json('')
     } catch (e) {
         next(e)
-    }
+    } 
 })
 authRouter.get('/refresh', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

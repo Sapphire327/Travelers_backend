@@ -12,11 +12,12 @@ const __dirname = path.resolve()
 app.use(express.json())
 app.use(cookieParser())
 const client_url = process.env.CLIENT_SERVER_URL || 'http://localhost:3000'
+
 app.use(cors({ origin: [client_url], credentials: true }))
-// app.use('/api',router)
-app.use('/', router)
+app.use('/api',router)
+// app.use('/', router)
 app.use('/images', express.static(path.join(__dirname, 'uploads')))
-app.use(errorMiddleware)
+app.use(errorMiddleware) 
 const authService = new AuthService()
 
 async function main() {
