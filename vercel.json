@@ -5,19 +5,13 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/server.js"
+      "destination": "/dist/server.js"
     }
   ],
-  "builds": [
-        {
-            "src": "./dist/server.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/dist/server.js"
-        }
-    ]
+	"routes": [
+		{
+			"src": "/(.*)",
+			"dest": "/dist/server.js"
+		}
+	]
 }
