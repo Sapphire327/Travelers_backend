@@ -7,8 +7,5 @@
       "source": "/(.*)",
       "destination": "/server.js"
     }
-  ],
-  "experimental": {
-    "serverComponentsExternalPackages": []
-  }
+  ]
 }
