@@ -1,7 +1,7 @@
 {
   "buildCommand": "yarn build && yarn db:deploy",
   "installCommand": "yarn install",
-  "framework": "null",
+  "framework": "express",
   "rewrites": [
     {
       "source": "/(.*)",
