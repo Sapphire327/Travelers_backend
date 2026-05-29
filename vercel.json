@@ -1,0 +1,14 @@
+{
+  "buildCommand": "yarn build && yarn db:deploy",
+  "installCommand": "yarn install",
+  "framework": "null",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/server.js"
+    }
+  ],
+  "experimental": {
+    "serverComponentsExternalPackages": []
+  }
+}
