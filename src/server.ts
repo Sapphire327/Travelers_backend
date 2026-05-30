@@ -16,7 +16,7 @@ const client_url = process.env.CLIENT_SERVER_URL || 'http://localhost:3000'
 app.use(cors({ origin: [client_url], credentials: true }))
 app.use('/api',router)
 // app.use('/', router)
-app.use('/images', express.static(path.join(__dirname, 'uploads')))
+app.use('/images', express.static(path.join(__dirname, 'public')))
 app.use(errorMiddleware) 
 const authService = new AuthService()
 

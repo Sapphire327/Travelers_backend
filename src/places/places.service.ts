@@ -17,10 +17,10 @@ export class PlaceService {
         if (!place) throw ApiError.BadRequest('Запись была удалена или перемещена')
         if (placeData.deleteImages)
             placeData.deleteImages.forEach((file) => {
-                fs.unlink('uploads\\' + file, () => { })
+                fs.unlink('public\\' + file, () => { })
             })
         if (placeData.preview)
-            fs.unlink('uploads\\' + place.preview, () => { })
+            fs.unlink('public\\' + place.preview, () => { })
 
         let oldImage =JSON.parse(place.images) as string[];
         if (placeData.deleteImages != null && placeData.deleteImages.length > 0) { // @ts-ignore
