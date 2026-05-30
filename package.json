@@ -8,8 +8,8 @@
     "copy-files": "copy-folder src/generated dist/generated",
     "dev": "nodemon --exec tsx ./src/server.ts",
     "start": "node dist/server.js",
-    "db:deploy": "npx prisma generate && npx prisma migrate dev --name init && npx prisma generate",
-    "build": "yarn clean && tsc && yarn copy-files && tsc-alias && yarn db:deploy"
+    "db:deploy": "npx prisma migrate deploy ",
+    "build": "yarn clean && tsc && yarn copy-files && tsc-alias && npx prisma generate"
   },
   "keywords": [],
   "author": "",
