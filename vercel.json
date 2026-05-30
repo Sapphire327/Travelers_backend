@@ -1,12 +1,12 @@
 {
-  "buildCommand": "yarn build && yarn db:deploy",
+  "buildCommand": "yarn build && yarn db:deploy && yarn start",
   "installCommand": "yarn install",
   "outputDirectory": "dist",
   "framework": "express",
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "dist/server.js"
+      "destination": "./dist/server.js"
     }
   ]
 }
