@@ -1,15 +1,11 @@
 {
-  "framework": "express",
-  "builds": [
+  "buildCommand": "yarn build && yarn db:deploy",
+  "installCommand": "yarn install",
+  "framework": "null",
+  "rewrites": [
     {
-      "src": "src/server.ts",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "src/server.ts"
+      "source": "/(.*)",
+      "destination": "dist/server.js"
     }
   ]
 }
