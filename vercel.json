@@ -1,11 +1,6 @@
 {
 	"framework": "express",
-	"rewrites": [
-		{
-		"source": "/(.*)",
-		"destination": "/dist/server.js"
-		}
-	],
+
 	"builds": [
         {
             "src": "./dist/server.js",
