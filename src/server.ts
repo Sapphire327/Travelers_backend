@@ -1,9 +1,9 @@
-import { AuthService } from "@/auth/auth.service"
 import cookieParser from "cookie-parser"
 import cors from 'cors'
 import dotenv from "dotenv"
 import express, { NextFunction, Request, Response } from 'express'
 import path from 'path'
+import { AuthService } from "./auth/auth.service"
 import errorMiddleware from './middlewares/error-middleware'
 import router from './router/index'
 dotenv.config({ quiet: true })
