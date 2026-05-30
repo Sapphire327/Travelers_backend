@@ -1,17 +1,21 @@
 {
-  "buildCommand": "yarn build && yarn db:deploy",
-  "installCommand": "yarn install",
-  "framework": "express",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/dist/server.js"
-    }
-  ],
-	"routes": [
+	"framework": "express",
+	"rewrites": [
 		{
-			"src": "/(.*)",
-			"dest": "/dist/server.js"
+		"source": "/(.*)",
+		"destination": "/dist/server.js"
 		}
-	]
+	],
+	"builds": [
+        {
+            "src": "./dist/server.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/dist/server.js"
+        }
+    ]
 }
