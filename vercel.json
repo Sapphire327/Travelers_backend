@@ -1,12 +1,6 @@
 {
   "outputDirectory": "dist",
   "framework": "express",
-  "builds": [
-    {
-      "src": "dist/server.js",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
