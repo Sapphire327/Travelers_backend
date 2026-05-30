@@ -1,6 +1,7 @@
 {
   "buildCommand": "yarn build && yarn db:deploy",
   "installCommand": "yarn install",
+  "outputDirectory": "dist",
   "framework": "express",
   "rewrites": [
     {
