@@ -14,9 +14,10 @@ app.use(cookieParser())
 const client_url = process.env.CLIENT_SERVER_URL || 'http://localhost:3000'
 
 app.use(cors({ origin: [client_url], credentials: true }))
-app.use('/api',router)
-// app.use('/', router)
-app.use('/images', express.static(path.join(__dirname, 'public')))
+app.use('/api', router)
+if (process.env.STORAGE_TYPE !== 'vercel-blob') {
+    app.use('/images', express.static(path.join(__dirname, 'public')))
+}
 app.use(errorMiddleware) 
 const authService = new AuthService()
 
