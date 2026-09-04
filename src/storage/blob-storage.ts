@@ -1,4 +1,4 @@
-import { put, del } from '@vercel/blob'
+import { del, put } from '@vercel/blob'
 import { IStorage } from './storage.interface'
 
 export class BlobStorage implements IStorage {
