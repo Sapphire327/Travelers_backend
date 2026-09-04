@@ -1,5 +1,5 @@
 import ApiError from "@/exceptions/api-error"
-import { upload, prepareFiles } from "@/imageUploader/imageUploader"
+import { prepareFiles, upload } from "@/imageUploader/imageUploader"
 import { authMiddleware } from "@/middlewares/auth.middleware"
 import { onlyAdminMiddleware } from "@/middlewares/onlyAdmin.middleware"
 import { placeCreateDTO, placeEditDTO } from "@/places/models/places.dto"

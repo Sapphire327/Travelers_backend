@@ -1,6 +1,6 @@
 import { prisma } from '@/db'
 import ApiError from "@/exceptions/api-error"
-import { placeCreate, placeEdit, FileData } from "@/places/models/places.dto"
+import { FileData, placeCreate, placeEdit } from "@/places/models/places.dto"
 import { storage } from "@/storage"
 
 export class PlaceService {
