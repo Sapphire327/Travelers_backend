@@ -118,7 +118,12 @@ export class ToursService {
             },
         })
         if (!tour) throw ApiError.BadRequest('Запись не найдена')
-        return { ...tour, currentPeople: tour._count.applications,place:{images:JSON.parse(tour.place.images)} }
+        return { ...tour,
+                 currentPeople: tour._count.applications,
+                 place:{
+                    ...tour.place,
+                    images:JSON.parse(tour.place.images)
+                }}
     }
 
     async getTourById(id: number) {
